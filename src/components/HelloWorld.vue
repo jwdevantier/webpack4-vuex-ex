@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Stats from '@/components/Stats.vue'
+import Stats from '@components/Stats.vue'
 import {mapState, mapMutations, mapActions} from 'vuex'
 
 

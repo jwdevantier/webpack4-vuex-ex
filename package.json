@@ -4,7 +4,8 @@
   "main": "src/app.js",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --config build/webpack.config.dev.js"
+    "dev": "webpack-dev-server --progress --config build/webpack.config.dev.js",
+    "prod": "webpack --config build/webpack.config.prod.js"
   },
   "dependencies": {
     "vue": "^2.5.16",
@@ -13,6 +14,8 @@
   },
   "devDependencies": {
     "autoprefixer": "^8.4.1",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
     "css-loader": "^0.28.11",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.0",

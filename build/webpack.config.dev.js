@@ -1,53 +1,45 @@
 'use strict'
 
-const path = require('path')
-
 const webpack = require('webpack')
-const { VueLoaderPlugin } = require('vue-loader')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const merge = require('webpack-merge')
+const cfgBase = require('./webpack.config.base')
+const utils = require('./utils')
 
-const devMode = process.env.NODE_ENV !== 'production'
-function resolve (dir) {
-  return path.join(__dirname, '..', dir)
-}
+const HOST = 'localhost'
+const PORT = '8080'
 
-module.exports = {
-  mode: 'development', 
-  entry: ['./src/app.js'],
-
+module.exports = merge(cfgBase, {
+  mode: 'development',
+  //TODO: add more if errors encountered
   devServer: {
-    hot: true
+    hot: true,
+    host: HOST,
+    port: PORT
   },
 
-  resolve: {
-    extensions: ['.js', '.vue', '.json'],
-    alias: {
-      '@': resolve('src'),
-    }
-  },
   module: {
-    rules: [{
-      test: /\.vue$/,
-      use: 'vue-loader'},
-      { test: /\.scss$/,
+    rules: [
+      {
+        test: /\.css$/,
         use: [
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader',
-          {loader: 'postcss-loader', options: {config: {path: path.resolve(__dirname, 'postcss.config.js')}}},
-          'sass-loader']}
+          'vue-style-loader',
+          utils.css_loader,
+          utils.postcss_loader
+        ]
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          'vue-style-loader',
+          utils.css_loader,
+          utils.postcss_loader,
+          'sass-loader'
+        ]
+      }
     ]
   },
+
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css"}),
-      new VueLoaderPlugin(),
-      new webpack.HotModuleReplacementPlugin(),
-      new HtmlWebpackPlugin({
-        filename: 'index.html',
-        template: 'index.html',
-        inject: true
-      })
-    ]
-  }
+    new webpack.HotModuleReplacementPlugin()
+  ]
+})
